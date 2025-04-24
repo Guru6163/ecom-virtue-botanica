@@ -13,10 +13,11 @@ export interface CartItemType extends Product {
 }
 
 export interface Category {
+  title: string
   id: string
-  name: string
   slug: string
   image: string
+  description: string
 }
 
 export interface Order {

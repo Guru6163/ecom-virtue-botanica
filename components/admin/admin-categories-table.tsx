@@ -1,8 +1,8 @@
-"use client"
-import Link from "next/link"
-import Image from "next/image"
-import { Edit, MoreHorizontal, Trash } from "lucide-react"
-import { Button } from "@/components/ui/button"
+"use client";
+import Link from "next/link";
+import Image from "next/image";
+import { Edit, MoreHorizontal, Trash } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,12 +10,32 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { useCategories } from "@/hooks/use-categories"
+} from "@/components/ui/dropdown-menu";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { useCategories } from "@/hooks/use-categories";
+import { useEffect } from "react";
 
-export function AdminCategoriesTable() {
-  const { categories } = useCategories()
+interface AdminCategoriesTableProps {
+  fetchData: boolean;
+  setFetchData: (value: boolean) => void;
+}
+
+export function AdminCategoriesTable({ fetchData, setFetchData }: AdminCategoriesTableProps) {
+  const { categories, refetchCategories } = useCategories();
+
+  useEffect(() => {
+    if (fetchData) {
+      refetchCategories?.(); // fetch new categories
+      setFetchData(false);   // reset trigger flag
+    }
+  }, [fetchData, refetchCategories, setFetchData]);
 
   return (
     <div className="rounded-md border">
@@ -23,7 +43,7 @@ export function AdminCategoriesTable() {
         <TableHeader>
           <TableRow>
             <TableHead className="w-16">Image</TableHead>
-            <TableHead>Name</TableHead>
+            <TableHead>Title</TableHead>
             <TableHead>Slug</TableHead>
             <TableHead>Products</TableHead>
             <TableHead className="w-24">Actions</TableHead>
@@ -32,7 +52,10 @@ export function AdminCategoriesTable() {
         <TableBody>
           {categories.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
+              <TableCell
+                colSpan={5}
+                className="text-center py-8 text-muted-foreground"
+              >
                 No categories found
               </TableCell>
             </TableRow>
@@ -43,13 +66,13 @@ export function AdminCategoriesTable() {
                   <div className="relative h-10 w-10 overflow-hidden rounded-md">
                     <Image
                       src={category.image || "/placeholder.svg"}
-                      alt={category.name}
+                      alt={category.title}
                       fill
                       className="object-cover"
                     />
                   </div>
                 </TableCell>
-                <TableCell className="font-medium">{category.name}</TableCell>
+                <TableCell className="font-medium">{category.title}</TableCell>
                 <TableCell>{category.slug}</TableCell>
                 <TableCell>0</TableCell>
                 <TableCell>
@@ -63,7 +86,10 @@ export function AdminCategoriesTable() {
                       <DropdownMenuLabel>Actions</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem asChild>
-                        <Link href={`/admin/categories/${category.id}`} className="flex items-center">
+                        <Link
+                          href={`/admin/categories/${category.id}`}
+                          className="flex items-center"
+                        >
                           <Edit className="mr-2 h-4 w-4" />
                           Edit
                         </Link>
@@ -81,5 +107,5 @@ export function AdminCategoriesTable() {
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }

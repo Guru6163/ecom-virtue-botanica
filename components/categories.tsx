@@ -17,12 +17,12 @@ export async function Categories() {
           >
             <Image
               src={category.image || "/placeholder.svg"}
-              alt={category.name}
+              alt={category.title}
               fill
               className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
-              <h3 className="text-xl font-semibold text-white">{category.name}</h3>
+              <h3 className="text-xl font-semibold text-white">{category.title}</h3>
             </div>
           </Link>
         ))}
