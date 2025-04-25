@@ -60,7 +60,7 @@ export function AdminCategoriesTable({ fetchData, setFetchData }: AdminCategorie
               </TableCell>
             </TableRow>
           ) : (
-            categories.map((category) => (
+            categories?.map((category) => (
               <TableRow key={category.id}>
                 <TableCell>
                   <div className="relative h-10 w-10 overflow-hidden rounded-md">

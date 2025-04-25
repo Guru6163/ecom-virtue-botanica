@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { ToastContainer, toast, Bounce } from "react-toastify";
 
 export default function AdminCategoriesPage() {
   const [title, setTitle] = useState("");
@@ -46,6 +47,16 @@ export default function AdminCategoriesPage() {
       if (!res.ok) {
         throw new Error("Failed to create category");
       }
+      toast.success("✅ Category created successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+        transition: Bounce,
+      });
 
       // Reset form fields
       setTitle("");
@@ -59,7 +70,12 @@ export default function AdminCategoriesPage() {
       // Close the dialog
       setIsDialogOpen(false);
     } catch (err) {
-      console.error(err);
+      toast.error("❌ Failed to create category", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "light",
+        transition: Bounce,
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -69,6 +85,7 @@ export default function AdminCategoriesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Categories</h1>
+        <ToastContainer />
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button>
